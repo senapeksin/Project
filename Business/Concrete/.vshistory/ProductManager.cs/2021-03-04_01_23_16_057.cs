@@ -28,7 +28,9 @@ namespace Business.Concrete
         {
             //iş kodları -- business code
             //validation -- doğrulama
+           
             ValidationTool.Validate(new ProductValidator(),product);
+
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }

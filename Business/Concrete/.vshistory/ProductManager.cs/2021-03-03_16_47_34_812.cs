@@ -1,12 +1,9 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.ValidationRules.FluentValidation;
-using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,7 +25,7 @@ namespace Business.Concrete
         {
             //iş kodları -- business code
             //validation -- doğrulama
-            ValidationTool.Validate(new ProductValidator(),product);
+            
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
