@@ -3,7 +3,6 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
-using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,12 +20,10 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        ICategoryService _categoryService;
 
-        public ProductManager(IProductDal productDal, ICategoryService categoryService)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-            _categoryService = categoryService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
@@ -34,17 +31,13 @@ namespace Business.Concrete
         {
             //validation -- doğrulama
             //iş kodları -- business code
-            //Eğer mevcut kategori sayısı 15 ' i geçtiyse sisteme yeni ürün eklenemez.
-            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId),
-                              CheckIfProductNameExists(product.ProductName),
-                              CheckIfCategoryLimitExceded());
 
-            if (result != null)   //result : kurala uymayan.
+            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
             {
-                return result;
+                _productDal.Add(product);
+                return new SuccessResult(Messages.ProductAdded);
             }
-            _productDal.Add(product);
-            return new SuccessResult(Messages.ProductAdded);
+            return new ErrorResult();
         }
 
         public IDataResult<List<Product>> GetAll()
@@ -100,19 +93,10 @@ namespace Business.Concrete
         }
         private IResult CheckIfProductNameExists(string productName)
         {
-            var result = _productDal.GetAll(p => p.ProductName == productName).Any(); //any = var mı ?
-            if (result)
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any; //any = var mı ?
+            if (result >= 15)
             {
-                return new ErrorResult(Messages.ProductNameAlreadyExists);
-            }
-            return new SuccessResult();
-        }
-        private IResult CheckIfCategoryLimitExceded()
-        {
-            var result = _categoryService.GetAll();
-            if (result.Data.Count>15)
-            {
-                return new ErrorResult(Messages.CategoryLimitExceded);
+                return new ErrorResult(Messages.ProductCountOfCategoryError);
             }
             return new SuccessResult();
         }

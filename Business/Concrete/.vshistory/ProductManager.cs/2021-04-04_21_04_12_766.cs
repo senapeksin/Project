@@ -3,7 +3,6 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
-using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -11,7 +10,6 @@ using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -21,30 +19,25 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        ICategoryService _categoryService;
 
-        public ProductManager(IProductDal productDal, ICategoryService categoryService)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-            _categoryService = categoryService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            //validation -- doğrulama
             //iş kodları -- business code
-            //Eğer mevcut kategori sayısı 15 ' i geçtiyse sisteme yeni ürün eklenemez.
-            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId),
-                              CheckIfProductNameExists(product.ProductName),
-                              CheckIfCategoryLimitExceded());
-
-            if (result != null)   //result : kurala uymayan.
+            //validation -- doğrulama
+            if (true)
             {
-                return result;
-            }
+
+            
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
+            }
+            return new ErrorResult();
         }
 
         public IDataResult<List<Product>> GetAll()
@@ -80,15 +73,9 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
         {
-            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
-            {
-                _productDal.Update(product);
-                return new SuccessResult(Messages.ProductAdded);
-            }
-            return new ErrorResult();
+            throw new NotImplementedException();
         }
 
-        //business code
         private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
         {
             var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
@@ -98,24 +85,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
-        private IResult CheckIfProductNameExists(string productName)
-        {
-            var result = _productDal.GetAll(p => p.ProductName == productName).Any(); //any = var mı ?
-            if (result)
-            {
-                return new ErrorResult(Messages.ProductNameAlreadyExists);
-            }
-            return new SuccessResult();
-        }
-        private IResult CheckIfCategoryLimitExceded()
-        {
-            var result = _categoryService.GetAll();
-            if (result.Data.Count>15)
-            {
-                return new ErrorResult(Messages.CategoryLimitExceded);
-            }
-            return new SuccessResult();
-        }
+
 
 
     }

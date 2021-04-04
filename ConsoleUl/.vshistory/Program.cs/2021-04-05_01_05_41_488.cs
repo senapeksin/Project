@@ -27,9 +27,7 @@ namespace ConsoleUl
 
         private static void ProductTest()
         {
-            ProductManager productManager = new ProductManager(new EfProductDal()
-                ,new CategoryManager(new EfCategoryDal()));
-
+            ProductManager productManager = new ProductManager(new EfProductDal());
             var result = productManager.GetProductDetails();
             if (result.Success==true)
             {

@@ -36,8 +36,7 @@ namespace Business.Concrete
             //iş kodları -- business code
             //Eğer mevcut kategori sayısı 15 ' i geçtiyse sisteme yeni ürün eklenemez.
             IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId),
-                              CheckIfProductNameExists(product.ProductName),
-                              CheckIfCategoryLimitExceded());
+                              CheckIfProductNameExists(product.ProductName));
 
             if (result != null)   //result : kurala uymayan.
             {
@@ -107,7 +106,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
-        private IResult CheckIfCategoryLimitExceded()
+        private IResult CheckIfCategoryLimitExceded(string productName)
         {
             var result = _categoryService.GetAll();
             if (result.Data.Count>15)

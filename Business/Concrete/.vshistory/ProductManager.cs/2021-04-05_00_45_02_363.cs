@@ -21,12 +21,12 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-        ICategoryService _categoryService;
+        ICategoryDal _categoryDal;
 
-        public ProductManager(IProductDal productDal, ICategoryService categoryService)
+        public ProductManager(IProductDal productDal, ICategoryDal categoryDal)
         {
             _productDal = productDal;
-            _categoryService = categoryService;
+            _categoryDal = categoryDal;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
@@ -36,8 +36,7 @@ namespace Business.Concrete
             //iş kodları -- business code
             //Eğer mevcut kategori sayısı 15 ' i geçtiyse sisteme yeni ürün eklenemez.
             IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId),
-                              CheckIfProductNameExists(product.ProductName),
-                              CheckIfCategoryLimitExceded());
+                              CheckIfProductNameExists(product.ProductName));
 
             if (result != null)   //result : kurala uymayan.
             {
@@ -104,15 +103,6 @@ namespace Business.Concrete
             if (result)
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
-            }
-            return new SuccessResult();
-        }
-        private IResult CheckIfCategoryLimitExceded()
-        {
-            var result = _categoryService.GetAll();
-            if (result.Data.Count>15)
-            {
-                return new ErrorResult(Messages.CategoryLimitExceded);
             }
             return new SuccessResult();
         }

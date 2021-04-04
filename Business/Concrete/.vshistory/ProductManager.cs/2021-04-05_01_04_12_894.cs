@@ -107,7 +107,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
-        private IResult CheckIfCategoryLimitExceded()
+        private IResult CheckIfCategoryLimitExceded(string productName)
         {
             var result = _categoryService.GetAll();
             if (result.Data.Count>15)
