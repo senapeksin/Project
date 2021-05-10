@@ -9,4 +9,3 @@ namespace Core.Utilities.Security.JWT
         public string Token { get; set; } //JWT
         public DateTime Expiration { get; set; } //bitiş zamanı
     }
-}
