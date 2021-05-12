@@ -61,13 +61,14 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-            services.AddDependencyResolvers(new ICoreModule[]{     // AddDependencyResolvers : Birden cok injection(CoreModule gibi) ekleyebilmek için yazdýk. 
+            services.AddDependencyResolvers(new ICoreModule[]{
 
                 new CoreModule()
 
                 }); 
            
-        
+            
+            //Birden cok injection(CoreModule gibi) ekleyebilmek için yazdýk. 
             //IServiceCollection (var olan sisteme) extension yapýcaz.
             //IServiceCollection : Apimizin servis baðýmlýlýklarýný eklediðimiz yada  araya girmesini istediðimiz servisleri eklediðimiz koleksiyon. 
 

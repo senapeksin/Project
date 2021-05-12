@@ -20,8 +20,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Core.Extensions;
-using Core.DependencyResolvers;
 
 namespace WebAPI
 {
@@ -61,15 +59,8 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-            services.AddDependencyResolvers(new ICoreModule[]{     // AddDependencyResolvers : Birden cok injection(CoreModule gibi) ekleyebilmek için yazdýk. 
-
-                new CoreModule()
-
-                }); 
            
-        
-            //IServiceCollection (var olan sisteme) extension yapýcaz.
-            //IServiceCollection : Apimizin servis baðýmlýlýklarýný eklediðimiz yada  araya girmesini istediðimiz servisleri eklediðimiz koleksiyon. 
+
 
         }
 

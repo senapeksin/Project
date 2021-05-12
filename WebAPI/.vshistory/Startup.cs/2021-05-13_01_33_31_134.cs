@@ -67,7 +67,8 @@ namespace WebAPI
 
                 }); 
            
-        
+            
+            //Birden cok injection(CoreModule gibi) ekleyebilmek için yazdýk. 
             //IServiceCollection (var olan sisteme) extension yapýcaz.
             //IServiceCollection : Apimizin servis baðýmlýlýklarýný eklediðimiz yada  araya girmesini istediðimiz servisleri eklediðimiz koleksiyon. 
 
