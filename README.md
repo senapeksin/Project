@@ -1,6 +1,6 @@
 # NetCoreBackend
 
-## Bu proje, Kurumsal, Katmanlı Mimari yapısı kullanılarak SOLID kuralları dahilinde oluşturulmuş, C# dili ile yazılmıştır.
+ Bu proje, Kurumsal, Katmanlı Mimari yapısı kullanılarak SOLID kuralları dahilinde oluşturulmuş, C# dili ile yazılmıştır.
 
 # Technologies Used
 - .NET
