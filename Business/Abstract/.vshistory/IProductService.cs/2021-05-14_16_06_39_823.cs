@@ -17,6 +17,6 @@ namespace Business.Abstract
         IResult Add(Product product); //void Add() ' idi. void olan yerde IResult döndürücem artık.
         IResult Update(Product product);
 
-        IResult AddTransactionalTest(Product product); 
+        IResult AddTransactionalTest(Product product); //Transactional  yönetimi : Uygulamalarda , tutarlılığı korumak için yaptığımız bir yöntem.
     }
 }
