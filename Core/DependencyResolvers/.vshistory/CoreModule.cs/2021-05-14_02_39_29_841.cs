@@ -16,7 +16,6 @@ namespace Core.DependencyResolvers
         //Ama bunun devrede olması gerekiyor bu noktada bir tane Service Tool vasıtasıyla yaptık.
         public void Load(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddMemoryCache(); //hazır gelen bir injection. Arka planda hazır bir ICacheManager instance olusturuyor..
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
         }
